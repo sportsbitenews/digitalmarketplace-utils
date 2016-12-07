@@ -112,6 +112,9 @@ class CustomLogFormatter(logging.Formatter):
     def format(self, record):
         record = self.add_fields(record)
         msg = super(CustomLogFormatter, self).format(record)
+
+        import logging
+        logging.debug(record)
         
         try:
             msg = msg.format(**record.__dict__)
