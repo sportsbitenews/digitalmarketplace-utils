@@ -102,24 +102,27 @@ class RequestIdFilter(logging.Filter):
 class CustomLogFormatter(logging.Formatter):
     """Accepts a format string for the message and formats it with the extra fields"""
 
-    FORMAT_STRING_FIELDS_PATTERN = re.compile(r'\((.+?)\)', re.IGNORECASE)
-
-    def add_fields(self, record):
-        for field in self.FORMAT_STRING_FIELDS_PATTERN.findall(self._fmt):
-            record.__dict__[field] = record.__dict__.get(field)
-        return record
-
-    def format(self, record):
-        record = self.add_fields(record)
-        msg = super(CustomLogFormatter, self).format(record)
-
-        print(record)
-
-        try:
-            msg = msg.format(**record.__dict__)
-        except (KeyError, IndexError) as e:
-            logger.exception("failed to format log message: {} not found".format(e))
-        return msg
+    # FORMAT_STRING_FIELDS_PATTERN = re.compile(r'\((.+?)\)', re.IGNORECASE)
+    #
+    # def add_fields(self, record):
+    #     for field in self.FORMAT_STRING_FIELDS_PATTERN.findall(self._fmt):
+    #         record.__dict__[field] = record.__dict__.get(field)
+    #         logging.debug(field)
+    #         logging.debug(record.__dict__[field])
+    #     return record
+    #
+    # def format(self, record):
+    #     record = self.add_fields(record)
+    #     msg = super(CustomLogFormatter, self).format(record)
+    #
+    #     try:
+    #         msg = msg.format(**record.__dict__)
+    #     except (KeyError, IndexError, ValueError) as e:
+    #         logger.exception("failed to format log message: {} (using format string '{}'".format(e, msg))
+    #         import sys
+    #         sys.exit()
+    #     return msg
+    pass
 
 
 class JSONFormatter(BaseJSONFormatter):
