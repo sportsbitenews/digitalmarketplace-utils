@@ -113,9 +113,8 @@ class CustomLogFormatter(logging.Formatter):
         record = self.add_fields(record)
         msg = super(CustomLogFormatter, self).format(record)
 
-        import logging
-        logging.debug(record)
-        
+        print(record)
+
         try:
             msg = msg.format(**record.__dict__)
         except (KeyError, IndexError) as e:
