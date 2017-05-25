@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from flask import Markup
 
-from dmutils.filters import capitalize_first, format_links, nbsp, smartjoin
+from dmutils.filters import capitalize_first, format_links, nbsp, smartjoin, question_references
 
 
 def test_smartjoin_for_more_than_one_item():
@@ -118,3 +118,27 @@ def test_capitalize_first_for_non_strings():
     assert capitalize_first([{'list': 'of'}, 'things']) == [{'list': 'of'}, 'Things']
     assert capitalize_first({'this': 'thing'}) == {'this': 'thing'}
     assert capitalize_first('https://www.example.com') == 'https://www.example.com'
+
+
+class TestQuestionReferences(object):
+
+    def get_question_mock(self, id):
+        return {'number': 19}
+
+    def test_string_with_with_question_references(self):
+        assert question_references(
+            'Please see question [[otherQuestion]] for more info',
+            self.get_question_mock
+        ) == 'Please see question 19 for more info'
+
+    def test_string_with_no_question_references(self):
+        assert question_references(
+            'What was the name of your first pet?',
+            self.get_question_mock
+        ) == 'What was the name of your first pet?'
+
+    def test_string_with_broken_question_references(self):
+        assert question_references(
+            'Here’s ]][[ a [[string full of ] misused square brackets]',
+            self.get_question_mock
+        ) == 'Here’s ]][[ a [[string full of ] misused square brackets]'

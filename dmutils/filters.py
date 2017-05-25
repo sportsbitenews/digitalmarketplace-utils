@@ -66,3 +66,15 @@ def capitalize_first(maybe_text):
         return [capitalize_first(item) for item in maybe_text]
 
     return maybe_text
+
+
+def question_references(data, get_question):
+    if not data:
+        return data
+    references = re.sub(
+        r"\[\[([^\]]+)\]\]",  # anything that looks like [[nameOfQuestion]]
+        lambda question_id: str(get_question(question_id.group(1))['number']),
+        data
+    )
+
+    return data.__class__(references)
