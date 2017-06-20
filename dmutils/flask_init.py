@@ -78,7 +78,7 @@ def get_extra_files(paths):
                     yield filename
 
 
-def init_manager(application, port, extra_directories=()):
+def init_manager(application, host, port, extra_directories=()):
 
     manager = Manager(application)
 
@@ -88,7 +88,7 @@ def init_manager(application, port, extra_directories=()):
 
     manager.add_command(
         "runserver",
-        Server(port=port, extra_files=extra_files)
+        Server(host=host, port=port, extra_files=extra_files)
     )
 
     @manager.command
